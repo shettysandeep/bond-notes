@@ -1,0 +1,146 @@
+---
+title: "Extracting FPI Assets Under Custody (AUC) Data from NSDL"
+author: "sandeep"
+date: "2026-07-10"
+draft: "false"
+---
+<!--
+Following up my post and work on the FPI data, I was disappointed with the lag in the FPI daily trade data, and additionally, the difficulty in looking at the data longitudinally to understand buying and selling patterns. I still want to look at that data closely and see som,some interesting ideas. For a short time, I thought I could look at the AUC data to understnad buying and selling. However, the AUC data cannot throw light into that by itself as there is a price element to the valuations of AUC. So, merely looking at the rise and fall of AUC is not sufficient as the movements are also driven by price movements and are not necessarily reflective of buying and selling. However, the AUC data is still very useful to understand the sectoral allocation of FPI investments in India.
+-->
+Assets Under Custody (AUC) data for FPIs shows the value of assets held by FPIs in the Indian capital markets on a given date. The NSDL provides aggregated AUC data across the broad sectors of the market. It covers investments in equity, debt, and mutual funds. We can use this data gives to review which sectors are of interest to FPIs. 
+
+The AUC is calculated using the prevailing market prices ($ AUC = Asset Quantity × Closing Market Price $). The AUC can change solely due to  price movements regardless of whether the holdings remain constant. To see the changes in physical asset holdings you need data on the underlying quantities. However, like the GDP deflator, we can use a price index to deflate the AUC to obtain a representation of the underlying quantities to track the changes over time in the holdings of FPIs. 
+
+
+## NSDL FPI AUC data
+
+The AUC is reported on a fortnightly basis and is available at the [NSDL website](https://www.nsdl.com/). The recent file is for June 2026 and goes back to 2000. 
+Some preprocessing is required before the data can be used effectively. 
+
+
+## Extracting the FPI AUC data from the NSDL website
+Each fortnight's data is a HTML file that looks like a spreadsheet. And the URL is mostly the same except the date at the end, which changes as you select different ones. The unchanging part of the URL is of the form:
+
+```{python}
+URL = "https://www.fpi.nsdl.co.in/web/StaticReports/Fortnightly_Sector_wise_FII_Investment_Data/FIIInvestSector"
+
+```
+
+And to this we will add the month and year in the format of `MonthNameDayYear.html` or `MonthAbbrDayYear.html`. For example, for June 2026, the URL is: 
+```{python}
+URL = "https://www.fpi.nsdl.co.in/web/StaticReports/Fortnightly_Sector_wise_FII_Investment_Data/FIIInvestSector_June152026.html"
+```
+
+
+### Generate the URLs for all months from 2020 to 2026
+
+> The month name in the NSDL filenames changes between the full month name and the abbreviated month name. For example, for June 2026, the date part is `June152026`. However, for some other months, like December, the date part is `Dec152026`. So, we will have to try both formats to get the data.
+
+> Also, each month there are two files, one for the 15th and one for the last day of the month. So, we will have to try both dates as well.
+
+This is how we will write the code to generate the URLs for all months from 2020 to 2026. We will try both the full month name and the abbreviated month name, and both the 15th and the last day of the month. This is simple procedural approach. One can tidy this up later.
+
+```{python}
+#| echo: true
+#| eval: false
+
+import requests
+import calendar
+
+URL = "https://www.fpi.nsdl.co.in/web/StaticReports/Fortnightly_Sector_wise_FII_Investment_Data/FIIInvestSector"
+middle_day = 15
+date_range = []
+
+# Inconsistent month representation in the NSDL files so accomodate both
+for year in range(2020, 2027):
+    for i in range(1, 13):
+        month_name = calendar.month_name[i] # for example, 'June'
+        month_abbr = calendar.month_abbr[i] # for example, 'Jun'
+        print(f"Processing {month_name} {year}")
+        last_day = calendar.monthrange(year, i)[1] # for example, 30 or 31
+
+        # month name URL for the last day and the 15th
+        url1 = f"{URL}_{month_name}{last_day}{year}.html"
+        url2 = f"{URL}_{month_name}{middle_day}{year}.html"
+        
+        # abbreviated month name URL for the last day and the 15th
+        alt_url1 = f"{URL}_{month_abbr}{last_day}{year}.html"
+        alt_url2 = f"{URL}_{month_abbr}{middle_day}{year}.html"
+        
+        # Append all the URLs to the date_range list
+        date_range.append(url1)
+        date_range.append(url2)
+        date_range.append(alt_url1)
+        date_range.append(alt_url2)
+
+```
+
+Now that we have the URLs, we can download the data and save it as CSV files. The following code will download the data for each URL and save it as a CSV file in the `auc_data/raw/` directory. If there are multiple tables in the HTML file, it will save each table as a separate CSV file.
+
+Each fortnight's spreadsheet has multiple tables, and we will save each table as a separate CSV file. The first table is the main table that we are interested in (`table0` as I call it below), and the other tables are supplementary tables that provide additional information. We will save all the tables for each fortnight's data.
+
+
+As you will below `Header` is important to avoid 403 error. The NSDL website blocks requests that do not have a User-Agent header. The User-Agent header is used to identify the client software making the request. In this case, we are using a User-Agent string that mimics a web browser (Safari on macOS). This helps to avoid being blocked by the server. You have to find what is yours and use that. You can find your User-Agent string by searching for "my user agent" in a web browser.
+
+
+```{python}
+import pandas
+from bs4 import BeautifulSoup
+from io import StringIO
+
+
+HEADER = {
+    "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.4 Safari/605.1.15",
+}
+
+for mn in date_range:
+    response = requests.get(mn, headers=HEADER)
+    if response.status_code == 200:
+        soup = BeautifulSoup(response.text, "html.parser")
+
+        if soup.find_all("table"):
+            for key, table in enumerate(soup.find_all("table")):
+                dat = pandas.read_html(StringIO(str(table)))[0]
+                dat.to_csv(
+                    f"auc_data/raw/data_{mn.split('/')[-1].replace('.html', '')}_table{key}.csv",
+                    index=False,
+                )
+
+        print(f"Downloaded: {mn}")
+```
+
+We will collect all the tables (i.e. `table0` in one folder.)
+
+```{python}
+
+import os
+import glob
+import shutil
+
+# collect all table0 (of interest) into one place
+
+source_dir = "./auc_data/raw/"
+target_dir = "./auc_data/raw/table0"
+
+# Create target directory if needed
+os.makedirs(target_dir, exist_ok=True)
+
+csv_files = glob.glob(os.path.join(source_dir, "*.csv"))
+t0_files = [f for f in csv_files if "table0" in os.path.basename(f)]
+
+# Loop and move all files
+for file_name in t0_files:
+    # Construct full file path
+    source_path = os.path.join(source_dir, file_name)
+
+    # Ensure it's a file (skips subfolders)
+    if os.path.isfile(source_path):
+        shutil.move(source_path, target_dir)
+
+print("All files transferred successfully.")
+
+
+```
+
+Now, you have all the FPI AUC data from the NSDL into one folder. In the next post, we will bring it together, clean, and review them. 
+

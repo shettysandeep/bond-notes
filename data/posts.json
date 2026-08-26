@@ -1,0 +1,16 @@
+[
+  {
+    "slug": "bond-fd",
+    "title": "bonds versus fd",
+    "date": "July 7, 2026",
+    "excerpt": "bond's provide flexibility",
+    "content": "There is one distinction that many of the content on the internet do not highlight enough regarding bonds vs fd. And that is the penalty when you exit before term. FDs have a steep penalty to exit prematurely. It can vary between 0.5 and 1%. In case of bonds there is a penalty as well but only when you are exiting during a higher interest regime relative to the time you invested. And this is due to the sensitivity of bond prices to interest rates and their inverse relationship. Exiting when the comparative interest rates are higher you will incur a penalty on the exit price, which will naturally be lower than the price you paid for the bond. However, in a regime with softer interest rates (expectation) you will receive a capital gain instead. This flexibility to exit is not available in FDs."
+  },
+  {
+    "slug": "mastering-tailwind-css",
+    "title": "Mastering Tailwind CSS",
+    "date": "July 5, 2026",
+    "excerpt": "A deep dive into utility-first CSS framework layouts and responsiveness.",
+    "content": "Tailwind CSS works by scanning all of your HTML files, JavaScript components, and other templates for class names, generating the corresponding styles and then writing them to a static CSS file."
+  }
+]
