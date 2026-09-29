@@ -4,6 +4,7 @@ date: "2026-07-15"
 tags: ["bond", "fd"]
 excerpt: "quick introduction."
 draft: "false"
+topic: "learn"
 ---
 
 ## what is a bond?

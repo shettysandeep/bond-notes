@@ -1,8 +1,11 @@
+---
 title: "Government Buyback of Bonds"
 date: "2026-07-29"
-tags: ["bond", "buyback","liquidity"]
+tags: ["bond", "buyback", "liquidity"]
 excerpt: "Managing liquidity via Bond Buyback"
-draft: "true"
+draft: "false"
+topic: "news"
+---
 
 The RBI conducted bond buy backs on behalf of the Government. The 2026 was
 bought back. Bond but back is the process by which a maturing bond is exchanged

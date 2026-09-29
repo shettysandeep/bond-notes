@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Playfair_Display, Courier_Prime, Special_Elite } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  Playfair_Display,
+  Courier_Prime,
+  Special_Elite,
+} from "next/font/google";
 import "./globals.css";
 import "highlight.js/styles/monokai-sublime.css";
-
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -16,16 +21,16 @@ const titleFont = Playfair_Display({
 
 // For a clean, classic machine typewriter look
 const titleFont2 = Courier_Prime({
-  weight: ['400', '700'],
+  weight: ["400", "700"],
   subsets: ["latin"],
   variable: "--font-typewriter",
 });
 
 // OR for a gritty, inked, vintage stamp look
 const specialElite = Special_Elite({
-  weight: '400',
-  subsets: ['latin'],
-  variable: '--font-vintage',
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-vintage",
 });
 
 const geistMono = Geist_Mono({
@@ -46,7 +51,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${titleFont.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${titleFont.variable} ${titleFont2.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">{children}</body>
     </html>

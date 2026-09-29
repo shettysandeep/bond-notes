@@ -4,6 +4,7 @@ date: "2026-07-15"
 tags: ["bond", "fd"]
 excerpt: "YTMs are not what you get."
 draft: "false"
+topic: "learn"
 ---
 
 `Yield to maturity (YTM)` is often quoted for bonds - government as well as corporate bonds - as a metric that summarizes the return on an investment on these securities when held for its life, in other words, until maturity. Atleast the just initiated buyers of bonds may interpret it that way. This is far from the truth.
