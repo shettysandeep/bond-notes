@@ -6,7 +6,6 @@ import { getSortedPostsData } from "@/data/extract";
 
 //const [posts, posts2] = getSortedPostsData();
 const posts = getSortedPostsData();
-//console.log(posts)
 
 export default function Home() {
   return (
@@ -17,8 +16,9 @@ export default function Home() {
         </h1>
         <p className="text-gray-500 mt-2">notes on the indian bond market.</p>
       </header>
-          {posts.map((post) => (
-            <article key={post.slug}> 
+      <div className="font-title space-y-2">
+      {posts.map((post) => (
+            <div key={post.slug} className="border-b border-gray-200 pb-6"> 
               <span className="text-sm text-gray-900">{post.date}</span>
               <h2 className="text-2xl font-bold text-gray-800 hover:text-blue-600 transition-colors mt-1">
                 <Link href={`/blog/${post.slug}`}>{post.title}</Link>
@@ -30,8 +30,9 @@ export default function Home() {
               >
                 Read more &rarr;
               </Link>
-            </article>
+            </div>
           ))}
+      </div>
    </main>
   );
 }

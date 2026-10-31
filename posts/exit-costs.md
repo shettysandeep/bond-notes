@@ -1,10 +1,8 @@
 ---
 title: "Bonds versus FDs: Early exit costs"
 date: "2026-07-14"
-tags: ["bond", "fd"]
 excerpt: "Exit penalty differs across Bonds and FDs."
 draft: "false"
-topic: "learn"
 ---
 
 One distinction between FDs and bonds that is overlooked often is the `price` of early exit - i.e. the first order costs of liquidating the bond or FD before its completes its term or maturity. In the case of FDs, this cost is known as an "early withdrawal penalty".

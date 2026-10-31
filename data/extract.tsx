@@ -8,8 +8,6 @@ import matter from "gray-matter";
 // Target your local posts folder
 
 const postsDirectory = path.join(process.cwd(), "posts");
-console.log(postsDirectory)
-
 export function getSortedPostsData() {
   // Get file names under /posts
   const fileNames = fs.readdirSync(postsDirectory);
@@ -32,13 +30,8 @@ export function getSortedPostsData() {
       content,
     };
   });
-
   // Sort posts by date & filter by news and learn. returning array!
-  return [
-    allPostsData
-      .sort((a, b) => (a.date < b.date ? 1 : -1))
-      .filter((a) => a.draft === "false" ), //&& a.topic === "learn"),
-  ];
+  return allPostsData.sort((a, b) => (a.date < b.date ? 1 : -1)).filter((a) => a.draft === "false" );
 }
 
 /*
