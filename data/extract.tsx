@@ -7,6 +7,15 @@ import matter from "gray-matter";
 
 // Target your local posts folder
 
+// 1. Define the shape of your metadata
+interface PostMetadata {
+  title: string;
+  date: string;
+  tags?: string[];
+  excerpt?: string;
+  draft?: string;
+}
+
 const postsDirectory = path.join(process.cwd(), "posts");
 export function getSortedPostsData() {
   // Get file names under /posts
@@ -22,16 +31,26 @@ export function getSortedPostsData() {
 
     // Use gray-matter to parse the post metadata section
     const matterResult = matter(fileContents);
-    const content = matterResult.content;
+    const { data, content } = matter(fileContents);
+    //const content = matterResult.content;
+    // adding the below line to fix type errors
+    //const meta1data = data as PostMetadata;
     // Combine the data with the id
     return {
       slug,
-      ...matterResult.data, // Contains title, date, tags, etc.
+      //meta1data,
+      title: data.title,
+      date: data.date,
+      excerpt: data.excerpt,
+      draft: data.draft,
+      //...matterResult.data, // Contains title, date, tags, etc.
       content,
     };
   });
   // Sort posts by date & filter by news and learn. returning array!
-  return allPostsData.sort((a, b) => (a.date < b.date ? 1 : -1)).filter((a) => a.draft === "false" );
+  return allPostsData
+    .sort((a, b) => (a.date < b.date ? 1 : -1))
+    .filter((a) => a.draft === "false");
 }
 
 /*

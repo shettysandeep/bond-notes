@@ -8,7 +8,7 @@ import { getSortedPostsData } from "@/data/extract";
 const posts = getSortedPostsData();
 
 interface Props {
-  params: Promise<{ slug: string; date: string; title: string }>;
+  params: Promise<{ slug: string }>;
 }
 
 export default async function PostPage({ params }: Props) {
