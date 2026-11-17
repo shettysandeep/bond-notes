@@ -14,7 +14,7 @@ export default function Layout() {
       {/* Main Content */}
       {/* Small Button on the Right */}
       <div className="fixed bottom-6 right-6 px-4 py-2 text-sm font-medium text-white bg-blue-500 hover:bg-blue-700 rounded-lg shadow-md transition-all duration-200 z-50">
-        <Link href="/about">Connect</Link>
+        <Link href="/about">Reach out!</Link>
       </div>
     </div>
   );

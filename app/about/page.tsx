@@ -13,15 +13,21 @@ export default async function About() {
       </Link>
       <article>
         <header className="mb-6">
-          <h1 className="text-3xl font-extrabold text-gray-900 mt-1">
-            About me
+          <h1 className="text-2xl font-extrabold text-gray-900 mt-1">
+            Comment or Connect!
           </h1>
         </header>
         <div className="font-sans prose text-gray-700 leading-relaxed">
-          <ReactMarkdown>
-            This should come from a page that is saved some where so we can edit
-            that file to reflect here.
-          </ReactMarkdown>
+          <p>
+            Thank you for your attention. If you liked any of the posts or have
+            a comment/feedback please message via
+            <Link href="https://linkedin.com/in/sandeepshetty"> LinkedIn</Link>.
+          </p>
+          <p>
+            Here I share thoughts and notes on the Indian debt market in a
+            simple, accessible way as I read and learn about it.
+          </p>
+          <p>I'm an applied economist and a data analytics consultant.</p>
         </div>
       </article>
     </main>
