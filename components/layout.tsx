@@ -3,7 +3,7 @@ import Link from "next/link";
 //import { Link } from "react-router-dom";
 //import { BrowserRouter, Router, Routes, Route } from "react-router-dom";
 //import Home from "../page.tsx";
-import About from "../app/about";
+//import About from "../app/about";
 //import About from "../blog/about/about1.tsx";
 //console.log("here");
 //console.log({ Home });
